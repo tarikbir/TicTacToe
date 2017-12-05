@@ -1,0 +1,6 @@
+C:\Users\tarik_000\Source\Repos\TicTac\TicTacProject\TicTacProject\bin\Debug\TicTacProject.exe.config
+C:\Users\tarik_000\Source\Repos\TicTac\TicTacProject\TicTacProject\bin\Debug\TicTacProject.exe
+C:\Users\tarik_000\Source\Repos\TicTac\TicTacProject\TicTacProject\bin\Debug\TicTacProject.pdb
+C:\Users\tarik_000\Source\Repos\TicTac\TicTacProject\TicTacProject\obj\Debug\TicTacProject.csprojResolveAssemblyReference.cache
+C:\Users\tarik_000\Source\Repos\TicTac\TicTacProject\TicTacProject\obj\Debug\TicTacProject.exe
+C:\Users\tarik_000\Source\Repos\TicTac\TicTacProject\TicTacProject\obj\Debug\TicTacProject.pdb
