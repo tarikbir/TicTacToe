@@ -33,6 +33,13 @@ namespace TicTacProject
             insanMi = insanmiKontrolu;
         }
 
+        public oyuncu(bool insanmiKontrolu, char kr, string ka)
+        {
+            karakter = kr;
+            insanMi = insanmiKontrolu;
+            kullaniciAdi = ka;
+        }
+
         public char karakteriAl()
         {
             return karakter;
@@ -43,21 +50,39 @@ namespace TicTacProject
             return insanMi;
         }
 
-        public string oyuncununHamlesiniAl()
+        public string oyuncununHamlesiniAl(int boyut)
         {
-            string hamle;
-            Console.WriteLine("Oyuncu {0} icin hamle giriniz: ",kullaniciAdi);
-            hamle = Console.ReadLine();
-            //TODO: Kontrol yap.
-            return hamle;
+            if (insanMi)
+                return insanOyuncuHamlesiniKontrol(boyut);
+            else
+                return bilgisayarHamlesiUret(boyut);
         }
 
-        public string insanOyuncuHamlesiniKontrol()
+        public string insanOyuncuHamlesiniKontrol(int boyut)
         {
-            return "xx";
+            int hamle;
+            string hamleS;
+            Console.WriteLine("Oyuncu {0} icin hamle giriniz: ", kullaniciAdi);
+            //TODO: Boyut kontrolu ekle
+            do
+            {
+                hamleS = Console.ReadLine();
+                if (!int.TryParse(hamleS, out hamle))
+                {
+                    Console.WriteLine("Lutfen dogru bir hamle giriniz: ");
+                    continue;
+                }
+                else
+                {
+                    hamleS = hamleS.Substring(0, 2);
+                    break;
+                }
+            } while (true);
+
+            return hamleS;
         }
 
-        public string bilgisayarHamlesiUret()
+        public string bilgisayarHamlesiUret(int boyut)
         {
             return "xx";
         }

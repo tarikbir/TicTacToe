@@ -57,7 +57,6 @@ namespace TicTacProject
             int[] kord = new int[2];
             kord[0] = Convert.ToInt32(koordinat.Substring(0,1));
             kord[1] = Convert.ToInt32(koordinat.Substring(1,1));
-            Console.WriteLine("({0},{1})", kord[0], kord[1]);
             return kord;
         }
 
