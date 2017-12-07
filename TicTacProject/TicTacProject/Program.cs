@@ -19,7 +19,7 @@ namespace TicTacProject
             //TODO: Tahtayi ayarla.
 
             oyuncu[] oyuncular = new oyuncu[2];
-            for(int i=0;i<2;i++) //Oyuncu atamasi
+            for (int i = 0; i < 2; i++) //Oyuncu atamasi
             {
                 char karakter;
                 bool insanMi;
@@ -34,10 +34,13 @@ namespace TicTacProject
                 oyuncuAdi = Console.ReadLine();
 
                 oyuncular[i] = new oyuncu(insanMi, karakter, oyuncuAdi);
-            }            
-            
+            }
+
+            Console.Clear();
+
             while (true) //Gameplay
             {
+                Console.WriteLine("Tahta: ");
                 string hamle;
                 tahta.oyunTahtasiniYazdir();
                 hamle = oyuncular[sira].oyuncununHamlesiniAl(n);
@@ -46,8 +49,16 @@ namespace TicTacProject
                     sira = (sira + 1) % 2;
                 }
                 
+                if (tahta.beraberlikKontrol())
+                {
+                    Console.Write("Oyun berabere bitti!");
+                    break;
+                }
                 //Console.Clear();
             }
+
+            Console.WriteLine(" Kapatmak icin bir tusa basiniz...");
+            Console.ReadKey();
 
         }
 

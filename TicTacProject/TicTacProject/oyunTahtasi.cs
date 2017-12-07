@@ -74,7 +74,7 @@ namespace TicTacProject
 
         public bool kazanan(char oyuncu)
         {
-            return true;
+            return false;
         }
 
         public bool beraberlikKontrol()

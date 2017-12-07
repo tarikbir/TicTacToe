@@ -67,13 +67,18 @@ namespace TicTacProject
             do
             {
                 hamleS = Console.ReadLine();
-                if (!int.TryParse(hamleS, out hamle))
+                if (!int.TryParse(hamleS, out hamle) || hamleS.Length<2)
                 {
                     Console.WriteLine("Lutfen dogru bir hamle giriniz: ");
                     continue;
                 }
                 else
                 {
+                    if (hamle % 10 > (boyut - 1) || hamle > (boyut - 1) * 11)
+                    {
+                        Console.WriteLine("Lutfen dogru bir hamle giriniz: ");
+                        continue;
+                    }
                     hamleS = hamleS.Substring(0, 2);
                     break;
                 }
