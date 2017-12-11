@@ -72,8 +72,44 @@ namespace TicTacProject
                 return false;
         }
 
-        public bool kazanan(char oyuncu)
+        public bool kazanan(oyuncu oyuncu)
         {
+            int kazanmaSayisi = 3;
+            if (boyut > 3)
+            {
+                kazanmaSayisi = 4;
+            }
+            char karakter = oyuncu.karakteriAl();
+            for (int i = 0; i < boyut; i++)
+            {
+                for (int j = 0; j < boyut; j++)
+                {
+                    if (oynTahtasi[i][j] == karakter )
+                    {
+                        int sayacH = 1;
+                        int sayacD = 1;
+                        int sayacV = 1;
+                        for (int b = 1; b < kazanmaSayisi-1; b++)
+                        {
+                            try
+                            {
+                                if (oynTahtasi[i][j + b] == karakter) sayacH++;
+                                if (oynTahtasi[i + b][j + b] == karakter) sayacD++;
+                                if (oynTahtasi[i + b][j] == karakter) sayacV++;
+                            }
+                            catch(Exception e)
+                            {
+                                continue;
+                            }
+                        }
+                        if (sayacD >= kazanmaSayisi || sayacH >= kazanmaSayisi || sayacV >= kazanmaSayisi)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
             return false;
         }
 

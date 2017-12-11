@@ -50,6 +50,11 @@ namespace TicTacProject
             return insanMi;
         }
 
+        public string kullaniciAdiniAl()
+        {
+            return kullaniciAdi;
+        }
+
         public string oyuncununHamlesiniAl(int boyut)
         {
             if (insanMi)
@@ -89,7 +94,12 @@ namespace TicTacProject
 
         public string bilgisayarHamlesiUret(int boyut)
         {
-            return "xx";
+            Random rnd = new Random();
+
+            int deger1 = rnd.Next(0, boyut);
+            int deger2 = rnd.Next(0, boyut);
+
+            return String.Concat(deger1, deger2);
         }
 
     }

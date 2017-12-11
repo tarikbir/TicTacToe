@@ -11,6 +11,7 @@ namespace TicTacProject
         static void Main(string[] args)
         {
             int n = 0, sira=0;
+            int oyuncuSayisi = 2;
             Console.Write("Tic Tac Toe icin n boyutunu giriniz: ");
             while (!int.TryParse(Console.ReadLine(), out n) || n>7 || n<3)
                 Console.WriteLine("Lutfen mantikli bir boyut giriniz (3-7 araliginda).");
@@ -19,7 +20,7 @@ namespace TicTacProject
             //TODO: Tahtayi ayarla.
 
             oyuncu[] oyuncular = new oyuncu[2];
-            for (int i = 0; i < 2; i++) //Oyuncu atamasi
+            for (int i = 0; i < oyuncuSayisi; i++) //Oyuncu atamasi
             {
                 char karakter;
                 bool insanMi;
@@ -44,17 +45,27 @@ namespace TicTacProject
                 string hamle;
                 tahta.oyunTahtasiniYazdir();
                 hamle = oyuncular[sira].oyuncununHamlesiniAl(n);
-                if (tahta.hamleyiYaz(hamle,oyuncular[sira]))
+
+                if (!tahta.hamleyiYaz(hamle, oyuncular[sira]))
                 {
-                    sira = (sira + 1) % 2;
+                    Console.Clear();
+                    continue;
                 }
-                
+
                 if (tahta.beraberlikKontrol())
                 {
                     Console.Write("Oyun berabere bitti!");
                     break;
                 }
-                //Console.Clear();
+                else if (tahta.kazanan(oyuncular[sira]))
+                {
+                    Console.Write("Oyunu {0} kazandi!", oyuncular[sira].kullaniciAdiniAl());
+                    break;
+                }
+
+                
+                sira = (sira + 1) % 2;
+                Console.Clear();
             }
 
             Console.WriteLine(" Kapatmak icin bir tusa basiniz...");
