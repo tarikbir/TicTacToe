@@ -54,12 +54,16 @@ namespace TicTacProject
 
                 if (tahta.beraberlikKontrol())
                 {
+                    Console.Clear();
                     Console.Write("Oyun berabere bitti!");
+                    tahta.oyunTahtasiniYazdir();
                     break;
                 }
                 else if (tahta.kazanan(oyuncular[sira]))
                 {
+                    Console.Clear();
                     Console.Write("Oyunu {0} kazandi!", oyuncular[sira].kullaniciAdiniAl());
+                    tahta.oyunTahtasiniYazdir();
                     break;
                 }
 

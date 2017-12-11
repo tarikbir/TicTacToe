@@ -89,17 +89,21 @@ namespace TicTacProject
                         int sayacH = 1;
                         int sayacD = 1;
                         int sayacV = 1;
-                        for (int b = 1; b < kazanmaSayisi-1; b++)
+                        for (int b = 1; b < kazanmaSayisi; b++)
                         {
-                            try
+                            if (j + b < boyut)
                             {
                                 if (oynTahtasi[i][j + b] == karakter) sayacH++;
-                                if (oynTahtasi[i + b][j + b] == karakter) sayacD++;
+                            }
+
+                            if (i + b < boyut)
+                            {
                                 if (oynTahtasi[i + b][j] == karakter) sayacV++;
                             }
-                            catch(Exception e)
+
+                            if (i + b < boyut && j + b < boyut)
                             {
-                                continue;
+                                if (oynTahtasi[i + b][j + b] == karakter) sayacD++;
                             }
                         }
                         if (sayacD >= kazanmaSayisi || sayacH >= kazanmaSayisi || sayacV >= kazanmaSayisi)
