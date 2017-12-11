@@ -43,11 +43,9 @@ namespace TicTacProject
         static void Main(string[] args)
         {
             int n = 3, sira=0, secim=0, oyuncuSayisi = 2;
+            string savePath = "save.txt";
             oyunTahtasi tahta;
             oyuncu[] oyuncular = new oyuncu[oyuncuSayisi];
-            var saveFile = File.Open("save.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            var saveFileW = new StreamWriter(saveFile);
-            var saveFileR = new StreamReader(saveFile);
 
             // MENU
             Console.Write("::Tic Tac Toe::\n1.Yeni Oyun\n2.Kayitli Oyunu Ac\n3.Cikis\n\nSecim: ");
@@ -57,8 +55,8 @@ namespace TicTacProject
             if (secim == 1) //YENI OYUN
             {
                 Console.Write("Tic Tac Toe icin n boyutunu giriniz: ");
-                while (!int.TryParse(Console.ReadLine(), out n) || n > 7 || n < 3)
-                    Console.WriteLine("Lutfen mantikli bir boyut giriniz (3-7 araliginda).");
+                while (!int.TryParse(Console.ReadLine(), out n) || n != 7 || n != 5 || n != 3)
+                    Console.WriteLine("Lutfen mantikli bir boyut giriniz (3, 5 veya 7).");
                 Console.WriteLine("Girilen deger: {0}", n);
                 tahta = new oyunTahtasi(n);
                 for (int i = 0; i < oyuncuSayisi; i++) //Oyuncu atamasi
@@ -70,7 +68,7 @@ namespace TicTacProject
                     while (!bool.TryParse(Console.ReadLine(), out insanMi))
                         Console.WriteLine("Lutfen degeri adam gibi giriniz: ");
                     Console.WriteLine("Oyuncu {0} karakteri?", i + 1);
-                    while (!char.TryParse(Console.ReadLine(), out karakter))
+                    while (!char.TryParse(Console.ReadLine(), out karakter) || karakter == ' ')
                         Console.WriteLine("Lutfen karaktersizlik yapmayiniz: ");
                     Console.WriteLine("Oyuncu {0} adi nedir?", i + 1);
                     oyuncuAdi = Console.ReadLine();
@@ -80,28 +78,47 @@ namespace TicTacProject
             }
             else if (secim == 2) //KAYITLI OYUNU AC
             {
-                /*  boyut
-                 *  [matris]
-                 *  [matris]
-                 *  [matris]
-                 *  oyuncu1 karakter
-                 *  oyuncu1 insanMi
-                 *  oyuncu1 oyuncuAdi
-                 *  oyuncu2 karakter
-                 *  oyuncu2 insanMi
-                 *  oyuncu2 oyuncuAdi
-                 *  sira
-                 */
-                int boy = int.Parse(saveFileR.ReadLine());
-                for (int i = 0; i < boy; i++)
+                if (!File.Exists(savePath))
                 {
-                    string line = saveFileR.ReadLine();
-                    for (int j = 0; j < boy; j++)
-                    {
-
-                    }
+                    Console.WriteLine("No save file found. Press any key to exit.");
+                    Console.ReadKey();
+                    Environment.Exit(0);
                 }
-                tahta = new oyunTahtasi(n);
+                using (StreamReader sr = new StreamReader(savePath))
+                {
+                    n = int.Parse(sr.ReadLine());
+                    Console.WriteLine("Boyut alindi ({0}).", n);
+                    char[][] geciciTahta = new char[n][];
+                    for (int i = 0; i < n; i++)
+                    {
+                        geciciTahta[i] = sr.ReadLine().ToCharArray();
+                        Console.WriteLine(geciciTahta[i]);
+                    }
+                    Console.WriteLine("Oyun tahtasi alindi.");
+                    for (int i = 0; i < n; i++)
+                    {
+                        for (int j = 0; j < n; j++)
+                        {
+                            if (geciciTahta[i][j] == ' ')
+                                Console.Write("_ ");
+                            else
+                                Console.Write("{0} ", geciciTahta[i][j]);
+                        }
+                        Console.Write('\n');
+                    }
+                    tahta = new oyunTahtasi(geciciTahta, n);
+                    tahta.oyunTahtasiniYazdir();
+                    for (int i = 0; i < oyuncuSayisi; i++)
+                    {
+                        char karakter = char.Parse(sr.ReadLine());
+                        bool insanMi = bool.Parse(sr.ReadLine());
+                        string oyuncuAdi = sr.ReadLine();
+                        oyuncular[i] = new oyuncu(insanMi, karakter, oyuncuAdi);
+                        Console.WriteLine("Oyuncu {0} alindi.", oyuncuAdi);
+                    }
+                    sira = int.Parse(sr.ReadLine());
+                    Console.WriteLine("Sira alindi ({0}).", sira);
+                }
             }
             else
             {
@@ -141,9 +158,11 @@ namespace TicTacProject
                 
                 sira = (sira + 1) % 2;
                 Console.Clear();
-                otomatikKayit(n, tahta, oyuncular, oyuncuSayisi, sira, saveFileW);
+                using (StreamWriter sw = new StreamWriter(savePath, false))
+                {
+                    otomatikKayit(n, tahta, oyuncular, oyuncuSayisi, sira, sw);
+                }
             }
-
             Console.WriteLine(" Kapatmak icin bir tusa basiniz...");
             Console.ReadKey();
 

@@ -8,12 +8,18 @@ namespace TicTacProject
 {
     class oyunTahtasi
     {
-        public char[][] oynTahtasi = new char [7][];
+        private char[][] oynTahtasi;
         private int boyut=3;
 
         public oyunTahtasi()
         {
-
+            for (int i = 0; i < boyut; i++)
+            {
+                for (int j = 0; j < boyut; j++)
+                {
+                    oynTahtasi[i][j] = ' ';
+                }
+            }
         }
 
         public oyunTahtasi(int boyut)
@@ -22,14 +28,18 @@ namespace TicTacProject
             for (int i=0; i<boyut; i++)
             {
                 oynTahtasi[i] = new char[boyut];
+                for (int j = 0; j < oynTahtasi[i].Length; j++)
+                {
+                    oynTahtasi[i][j] = ' ';
+                }
             }
         }
 
         public oyunTahtasi(char[][] oynTahtasi, int boyut)
         {
-            this.oynTahtasi.Equals(oynTahtasi);
             this.boyut = boyut;
-            //Start here
+            this.oynTahtasi = new char[boyut][];
+            this.oynTahtasi = oynTahtasi;
         }
 
         public char[][] oyunTahtasiniAl()
@@ -43,10 +53,10 @@ namespace TicTacProject
             {
                 for (int j=0; j<boyut; j++)
                 {
-                    if (oynTahtasi[i][j] != 0)
-                        Console.Write("{0} ", oynTahtasi[i][j]);
-                    else
+                    if (oynTahtasi[i][j] == '\0')
                         Console.Write("_ ");
+                    else
+                        Console.Write("{0} ", oynTahtasi[i][j]);
                 }
                 Console.WriteLine();
             }
@@ -63,7 +73,7 @@ namespace TicTacProject
         public bool hamleyiYaz(string koordinat, oyuncu oyuncu)
         {
             int[] kord = str2cord(koordinat);
-            if (oynTahtasi[kord[0]][kord[1]] == 0)
+            if (oynTahtasi[kord[0]][kord[1]] == '\0')
             {
                 oynTahtasi[kord[0]][kord[1]] = oyuncu.karakteriAl();
                 return true;
@@ -123,7 +133,7 @@ namespace TicTacProject
             {
                 for (int j = 0; j < boyut; j++)
                 {
-                    if (oynTahtasi[i][j] == 0)
+                    if (oynTahtasi[i][j] == '\0')
                         return false;
                 }
             }

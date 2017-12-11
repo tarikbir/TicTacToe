@@ -68,7 +68,6 @@ namespace TicTacProject
             int hamle;
             string hamleS;
             Console.WriteLine("Oyuncu {0} icin hamle giriniz: ", kullaniciAdi);
-            //TODO: Boyut kontrolu ekle
             do
             {
                 hamleS = Console.ReadLine();
