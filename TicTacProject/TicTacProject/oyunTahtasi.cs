@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TicTacProject
 {
@@ -42,8 +39,12 @@ namespace TicTacProject
 
         public void oyunTahtasiniYazdir()
         {
+            Console.Write(" ");
+            for (int i = 0; i < boyut; i++) Console.Write(" {0}", i);
+            Console.WriteLine();
             for (int i=0; i<boyut; i++)
             {
+                Console.Write("{0} ",i);
                 for (int j=0; j<boyut; j++)
                 {
                     if (oynTahtasi[i][j] == '\0')

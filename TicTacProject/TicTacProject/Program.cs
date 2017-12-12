@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace TicTacProject
@@ -11,18 +8,6 @@ namespace TicTacProject
     {
         static void otomatikKayit(int boyut, oyunTahtasi tahta, oyuncu[] oyuncular, int oyuncuSayisi, int sira, StreamWriter sw)
         {
-            /*  boyut
-                 *  [matris]
-                 *  [matris]
-                 *  [matris]
-                 *  oyuncu1 karakter
-                 *  oyuncu1 insanMi
-                 *  oyuncu1 oyuncuAdi
-                 *  oyuncu2 karakter
-                 *  oyuncu2 insanMi
-                 *  oyuncu2 oyuncuAdi
-                 *  sira
-                 */
             sw.WriteLine(boyut);
             char[][] oyunT = tahta.oyunTahtasiniAl();
             for (int i=0; i<boyut; i++)
@@ -54,33 +39,57 @@ namespace TicTacProject
 
             if (secim == 1) //YENI OYUN
             {
-                Console.Write("Tic Tac Toe icin n boyutunu giriniz: ");
+                int oyunTuru;
+                Console.Write("\nTic Tac Toe icin n boyutunu giriniz: ");
                 while (!int.TryParse(Console.ReadLine(), out n) || (n != 7 && n != 5 && n != 3))
                     Console.WriteLine("Lutfen mantikli bir boyut giriniz (3, 5 veya 7).");
-                Console.WriteLine("Girilen deger: {0}", n);
                 tahta = new oyunTahtasi(n);
-                for (int i = 0; i < oyuncuSayisi; i++) //Oyuncu atamasi
+                Console.Write("\nOyun turunu seciniz:\n1.Insan vs. Insan\n2.Insan vs. PC\n3.PC vs. PC\n\nSecim: ");
+                while (!int.TryParse(Console.ReadLine(), out oyunTuru) || oyunTuru < 1 || oyunTuru > 3)
+                    Console.WriteLine("Yanlis secim yaptiniz! 1-3 arasinda secim yapiniz!");
+                if (oyunTuru == 1) //Insan vs. Insan
+                {
+                    for (int i = 0; i < oyuncuSayisi; i++)
+                    {
+                        char karakter;
+                        string oyuncuAdi;
+                        Console.WriteLine("Oyuncu {0} karakteri?", i + 1);
+                        while (!char.TryParse(Console.ReadLine(), out karakter) || karakter == ' ')
+                            Console.WriteLine("Lutfen bosluk haricinde bir karakter giriniz: ");
+                        Console.WriteLine("Oyuncu {0} adi nedir?", i + 1);
+                        oyuncuAdi = Console.ReadLine();
+                        if (oyuncuAdi == "")
+                            oyuncular[i] = new oyuncu(true, karakter);
+                        else
+                            oyuncular[i] = new oyuncu(true, karakter, oyuncuAdi);
+                    }
+                }
+                else if (oyunTuru == 2) //Insan vs. PC
                 {
                     char karakter;
-                    bool insanMi;
                     string oyuncuAdi;
-                    Console.WriteLine("Oyuncu {0} insan mi? true/false ", i + 1);
-                    while (!bool.TryParse(Console.ReadLine(), out insanMi))
-                        Console.WriteLine("Lutfen true ya da false yaziniz: ");
-                    Console.WriteLine("Oyuncu {0} karakteri?", i + 1);
+                    Console.WriteLine("Oyuncu karakteri?");
                     while (!char.TryParse(Console.ReadLine(), out karakter) || karakter == ' ')
                         Console.WriteLine("Lutfen bosluk haricinde bir karakter giriniz: ");
-                    Console.WriteLine("Oyuncu {0} adi nedir?", i + 1);
+                    Console.WriteLine("Oyuncu adi nedir?");
                     oyuncuAdi = Console.ReadLine();
-
-                    oyuncular[i] = new oyuncu(insanMi, karakter, oyuncuAdi);
+                    if (oyuncuAdi == "")
+                        oyuncular[0] = new oyuncu(true, karakter);
+                    else
+                        oyuncular[0] = new oyuncu(true, karakter, oyuncuAdi);
+                    oyuncular[1] = new oyuncu(false);
+                }
+                else //PC vs. PC
+                {
+                    oyuncular[0] = new oyuncu(false, 'X', "PC 1");
+                    oyuncular[1] = new oyuncu(false, 'O', "PC 2");
                 }
             }
             else if (secim == 2) //KAYITLI OYUNU AC
             {
                 if (!File.Exists(savePath))
                 {
-                    Console.WriteLine("No save file found. Press any key to exit.");
+                    Console.WriteLine("Kayitli dosya bulunamadi. Cikis icin bir tusa basiniz.");
                     Console.ReadKey();
                     Environment.Exit(0);
                 }
@@ -95,19 +104,7 @@ namespace TicTacProject
                         Console.WriteLine(geciciTahta[i]);
                     }
                     Console.WriteLine("Oyun tahtasi alindi.");
-                    for (int i = 0; i < n; i++)
-                    {
-                        for (int j = 0; j < n; j++)
-                        {
-                            if (geciciTahta[i][j] == ' ')
-                                Console.Write("_ ");
-                            else
-                                Console.Write("{0} ", geciciTahta[i][j]);
-                        }
-                        Console.Write('\n');
-                    }
                     tahta = new oyunTahtasi(geciciTahta, n);
-                    tahta.oyunTahtasiniYazdir();
                     for (int i = 0; i < oyuncuSayisi; i++)
                     {
                         char karakter = char.Parse(sr.ReadLine());
@@ -126,13 +123,11 @@ namespace TicTacProject
                 Environment.Exit(0);
             }
             Console.Clear();
-
-            while (true) //Gameplay
+            while (true) //Oyun ana dongusu
             {
                 Console.WriteLine("Tahta: ");
-                string hamle;
                 tahta.oyunTahtasiniYazdir();
-                hamle = oyuncular[sira].oyuncununHamlesiniAl(n);
+                string hamle = oyuncular[sira].oyuncununHamlesiniAl(n);
 
                 if (!tahta.hamleyiYaz(hamle, oyuncular[sira]))
                 {
@@ -140,21 +135,20 @@ namespace TicTacProject
                     continue;
                 }
 
-                if (tahta.beraberlikKontrol())
-                {
-                    Console.Clear();
-                    Console.Write("Oyun berabere bitti!\n");
-                    tahta.oyunTahtasiniYazdir();
-                    break;
-                }
-                else if (tahta.kazanan(oyuncular[sira]))
+                if (tahta.kazanan(oyuncular[sira]))
                 {
                     Console.Clear();
                     Console.Write("Oyunu {0} kazandi!\n", oyuncular[sira].kullaniciAdiniAl());
                     tahta.oyunTahtasiniYazdir();
                     break;
                 }
-
+                else if (tahta.beraberlikKontrol())
+                {
+                    Console.Clear();
+                    Console.Write("Oyun berabere bitti!\n");
+                    tahta.oyunTahtasiniYazdir();
+                    break;
+                }
                 
                 sira = (sira + 1) % 2;
                 Console.Clear();
@@ -165,8 +159,6 @@ namespace TicTacProject
             }
             Console.WriteLine("Kapatmak icin bir tusa basiniz...");
             Console.ReadKey();
-
         }
-
     }
 }
