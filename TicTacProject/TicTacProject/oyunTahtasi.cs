@@ -8,30 +8,23 @@ namespace TicTacProject
 {
     class oyunTahtasi
     {
-        private char[][] oynTahtasi;
+        private char[][] oynTahtasi = new char[7][];
         private int boyut=3;
 
         public oyunTahtasi()
         {
             for (int i = 0; i < boyut; i++)
             {
-                for (int j = 0; j < boyut; j++)
-                {
-                    oynTahtasi[i][j] = ' ';
-                }
+                this.oynTahtasi[i] = new char[boyut];
             }
         }
 
         public oyunTahtasi(int boyut)
         {
             this.boyut = boyut;
-            for (int i=0; i<boyut; i++)
+            for (int i = 0; i < boyut; i++)
             {
-                oynTahtasi[i] = new char[boyut];
-                for (int j = 0; j < oynTahtasi[i].Length; j++)
-                {
-                    oynTahtasi[i][j] = ' ';
-                }
+                this.oynTahtasi[i] = new char[boyut];
             }
         }
 

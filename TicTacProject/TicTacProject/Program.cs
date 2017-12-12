@@ -55,7 +55,7 @@ namespace TicTacProject
             if (secim == 1) //YENI OYUN
             {
                 Console.Write("Tic Tac Toe icin n boyutunu giriniz: ");
-                while (!int.TryParse(Console.ReadLine(), out n) || n != 7 || n != 5 || n != 3)
+                while (!int.TryParse(Console.ReadLine(), out n) || (n != 7 && n != 5 && n != 3))
                     Console.WriteLine("Lutfen mantikli bir boyut giriniz (3, 5 veya 7).");
                 Console.WriteLine("Girilen deger: {0}", n);
                 tahta = new oyunTahtasi(n);
@@ -66,10 +66,10 @@ namespace TicTacProject
                     string oyuncuAdi;
                     Console.WriteLine("Oyuncu {0} insan mi? true/false ", i + 1);
                     while (!bool.TryParse(Console.ReadLine(), out insanMi))
-                        Console.WriteLine("Lutfen degeri adam gibi giriniz: ");
+                        Console.WriteLine("Lutfen true ya da false yaziniz: ");
                     Console.WriteLine("Oyuncu {0} karakteri?", i + 1);
                     while (!char.TryParse(Console.ReadLine(), out karakter) || karakter == ' ')
-                        Console.WriteLine("Lutfen karaktersizlik yapmayiniz: ");
+                        Console.WriteLine("Lutfen bosluk haricinde bir karakter giriniz: ");
                     Console.WriteLine("Oyuncu {0} adi nedir?", i + 1);
                     oyuncuAdi = Console.ReadLine();
 
@@ -143,14 +143,14 @@ namespace TicTacProject
                 if (tahta.beraberlikKontrol())
                 {
                     Console.Clear();
-                    Console.Write("Oyun berabere bitti!");
+                    Console.Write("Oyun berabere bitti!\n");
                     tahta.oyunTahtasiniYazdir();
                     break;
                 }
                 else if (tahta.kazanan(oyuncular[sira]))
                 {
                     Console.Clear();
-                    Console.Write("Oyunu {0} kazandi!", oyuncular[sira].kullaniciAdiniAl());
+                    Console.Write("Oyunu {0} kazandi!\n", oyuncular[sira].kullaniciAdiniAl());
                     tahta.oyunTahtasiniYazdir();
                     break;
                 }
@@ -163,7 +163,7 @@ namespace TicTacProject
                     otomatikKayit(n, tahta, oyuncular, oyuncuSayisi, sira, sw);
                 }
             }
-            Console.WriteLine(" Kapatmak icin bir tusa basiniz...");
+            Console.WriteLine("Kapatmak icin bir tusa basiniz...");
             Console.ReadKey();
 
         }
